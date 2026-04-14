@@ -137,6 +137,8 @@
         <option value="clean">Poprawiony</option>
         <option value="table">Tabela / formularz</option>
         <option value="summary">Podsumowanie</option>
+        <option value="sketch">Opis szkicu</option>
+        <option value="combined">Tekst + szkic (łącznie)</option>
       </select>
     </div>
     <div class="spin" id="spin"></div>
@@ -293,7 +295,9 @@ const modes={
   verbatim:'Przepisz DOKŁADNIE cały tekst widoczny w dokumencie, słowo po słowie, zachowując oryginalną pisownię i układ linii.',
   clean:'Przepisz tekst poprawiając błędy ortograficzne i interpunkcję. Zachowaj sens i strukturę.',
   table:'Odczytaj dane z tabeli lub formularza i przedstaw je w formacie tekstowym. Kolumny oddzielaj znakiem |. Zachowaj tytuł i nagłówki.',
-  summary:'Napisz krótkie podsumowanie (2–4 zdania) najważniejszych informacji z dokumentu.'
+  summary:'Napisz krótkie podsumowanie (2–4 zdania) najważniejszych informacji z dokumentu.',
+  sketch:'Opisz szczegółowo co widzisz na obrazie lub szkicu. Opisz: elementy graficzne, ich układ przestrzenny, kształty, powiązania między elementami, adnotacje, strzałki, wymiary jeśli widoczne. Odpowiadaj w języku polskim w formie strukturalnego opisu technicznego.',
+  combined:'Na obrazie może znajdować się zarówno tekst odręczny jak i szkic/rysunek. Wykonaj DWA zadania: 1) TEKST: przepisz dokładnie cały tekst odręczny. 2) SZKIC: opisz szczegółowo elementy graficzne, rysunki i szkice które widzisz — ich układ, kształty, powiązania, strzałki, wymiary. Rozdziel sekcje nagłówkami TEKST: i SZKIC:'
 };
 const langs={pl:'polskim',en:'angielskim',de:'niemieckim',fr:'francuskim',auto:'automatycznie wykrytym'};
 
@@ -302,7 +306,9 @@ async function run(){
   const key=apikey.value.trim();
   const lang=document.getElementById('lang').value;
   const mode=document.getElementById('mode').value;
-  const prompt=`Jesteś ekspertem OCR pisma odręcznego i dokumentów. Tekst jest w języku ${langs[lang]}.\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów, komentarzy ani wyjaśnień.`;
+  const isSketch=mode==='sketch'||mode==='combined';
+  const role=isSketch?'Jesteś ekspertem analizy wizualnej szkiców technicznych i rysunków odręcznych':'Jesteś ekspertem OCR pisma odręcznego i dokumentów';
+  const prompt=`${role}. Tekst/opis ma być w języku ${langs[lang]}.\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów, komentarzy ani wyjaśnień.`;
 
   const part=isPdf
     ?{inline_data:{mime_type:'application/pdf',data:b64}}
