@@ -6,7 +6,7 @@
 <title>Odczyt pisma odręcznego</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
-  :root {
+  :root{
     --bg:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;
     --border:#2e2e2e;--border-h:#444;--text:#f0f0f0;
     --muted:#888;--dim:#555;--accent:#c8f075;
@@ -14,11 +14,11 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:3rem 1.5rem}
-  header{width:100%;max-width:680px;margin-bottom:2.5rem}
+  header{width:100%;max-width:700px;margin-bottom:2.5rem}
   .logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;margin-bottom:10px}
   h1{font-size:28px;font-weight:400;line-height:1.2}
   h1 span{color:var(--muted)}
-  .main{width:100%;max-width:680px;display:flex;flex-direction:column;gap:1.25rem}
+  .main{width:100%;max-width:700px;display:flex;flex-direction:column;gap:1.25rem}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem}
   .lbl{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
   .key-wrap{display:flex;gap:8px;align-items:center}
@@ -33,18 +33,38 @@
   #model-status.ok{background:rgba(111,207,151,.08);border:1px solid rgba(111,207,151,.2);color:var(--ok)}
   #model-status.checking{background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
   #model-status.fail{background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.2);color:var(--danger)}
-  #zone{border:1.5px dashed var(--border-h);border-radius:var(--r);padding:2rem 1rem;text-align:center;cursor:pointer;transition:background .15s,border-color .2s;background:var(--surface)}
-  #zone:hover,#zone.over{background:var(--surface2);border-color:var(--accent-d)}
+
+  #zone{
+    border:1.5px dashed var(--border-h);
+    border-radius:var(--r);
+    min-height:220px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:background .15s,border-color .2s;
+    background:var(--surface);
+    padding:2rem 1.5rem;
+    position:relative;
+    user-select:none;
+  }
+  #zone.over{background:var(--surface2);border-color:var(--accent-d);border-style:solid}
   #zone input{display:none}
-  #prev{max-width:100%;max-height:240px;border-radius:8px;display:none;margin:0 auto;border:1px solid var(--border)}
-  #hint .ico{font-size:30px;margin-bottom:10px;opacity:.6}
-  #hint p{font-size:15px;color:var(--text);margin-bottom:4px}
+  #prev{max-width:100%;max-height:260px;border-radius:8px;display:none;margin:0 auto;border:1px solid var(--border)}
+  #pdf-info{display:none;font-family:'DM Mono',monospace;font-size:13px;color:var(--ok);margin-top:10px;text-align:center}
+  #hint{text-align:center;pointer-events:none}
+  #hint .ico{font-size:36px;margin-bottom:12px;opacity:.5}
+  #hint p{font-size:16px;color:var(--text);margin-bottom:6px;font-weight:400}
   #hint small{font-size:13px;color:var(--dim)}
+  #hint .formats{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+  #hint .tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:3px 8px}
+
   .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
   .ctrl{display:flex;flex-direction:column;flex:1;min-width:130px}
   select{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
   select:focus{border-color:var(--border-h)}
-  #run-btn{background:var(--accent);border:none;border-radius:7px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#0f0f0f;cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap;align-self:flex-end}
+  #run-btn{background:var(--accent);border:none;border-radius:7px;padding:10px 24px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#0f0f0f;cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap;align-self:flex-end}
   #run-btn:hover{opacity:.9}
   #run-btn:active{transform:scale(.97)}
   #run-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
@@ -58,7 +78,7 @@
   .copy-btn:hover{color:var(--text);border-color:var(--border-h)}
   #out{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;font-family:'DM Mono',monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--text);word-break:break-word}
   #used-model{font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;margin-top:8px}
-  footer{margin-top:3rem;font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:.05em}
+  footer{margin-top:3rem;font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:.05em;text-align:center}
 </style>
 </head>
 <body>
@@ -72,8 +92,8 @@
   <div class="card">
     <label class="lbl" for="apikey">Klucz API — Google AI Studio</label>
     <div class="key-wrap">
-      <input type="password" id="apikey" placeholder="AIzaSy..." autocomplete="off" oninput="onKeyInput()">
-      <button class="tog" onclick="toggleKey()">pokaż</button>
+      <input type="password" id="apikey" placeholder="AIzaSy..." autocomplete="off">
+      <button class="tog" id="tog-btn">pokaż</button>
     </div>
     <div class="note">
       Klucz przechowywany wyłącznie lokalnie w przeglądarce. Nie wychodzi nigdzie poza Google.<br>
@@ -82,17 +102,20 @@
     <div id="model-status"></div>
   </div>
 
-  <div id="zone"
-    onclick="document.getElementById('fi').click()"
-    ondragover="event.preventDefault();this.classList.add('over')"
-    ondragleave="this.classList.remove('over')"
-    ondrop="ev=>{ev.preventDefault();this.classList.remove('over');load(ev.dataTransfer.files[0])}">
-    <input id="fi" type="file" accept="image/*" onchange="load(this.files[0])">
+  <div id="zone">
+    <input id="fi" type="file" accept="image/png,image/jpeg,image/webp,image/gif,application/pdf">
     <img id="prev" alt="podgląd">
+    <div id="pdf-info"></div>
     <div id="hint">
-      <div class="ico">&#128247;</div>
-      <p>Przeciągnij zdjęcie lub kliknij</p>
-      <small>PNG, JPG, WEBP — notatki, kartki, formularze, tablice</small>
+      <div class="ico">&#8599;</div>
+      <p>Przeciągnij plik tutaj lub kliknij</p>
+      <small>Obsługiwane formaty:</small>
+      <div class="formats">
+        <span class="tag">PNG</span>
+        <span class="tag">JPG</span>
+        <span class="tag">WEBP</span>
+        <span class="tag">PDF</span>
+      </div>
     </div>
   </div>
 
@@ -117,7 +140,7 @@
       </select>
     </div>
     <div class="spin" id="spin"></div>
-    <button id="run-btn" onclick="run()" disabled>Odczytaj →</button>
+    <button id="run-btn" disabled>Odczytaj →</button>
   </div>
 
   <div id="err"></div>
@@ -125,7 +148,7 @@
   <div id="res-wrap">
     <div class="res-hdr">
       <span class="lbl">Wynik odczytu</span>
-      <button class="copy-btn" onclick="cp(this)">kopiuj</button>
+      <button class="copy-btn" id="copy-btn">kopiuj</button>
     </div>
     <div id="out"></div>
     <div id="used-model"></div>
@@ -136,19 +159,62 @@
 <footer>powered by Google Gemini &mdash; działa lokalnie, bez serwera</footer>
 
 <script>
-let b64=null, mime=null, detectedModel=null, keyTimer=null;
+let b64=null, mime=null, detectedModel=null, keyTimer=null, isPdf=false;
 
-function toggleKey(){
-  const i=document.getElementById('apikey');
-  const b=event.target;
-  i.type=i.type==='password'?'text':'password';
-  b.textContent=i.type==='password'?'pokaż':'ukryj';
-}
+const zone=document.getElementById('zone');
+const fi=document.getElementById('fi');
+const apikey=document.getElementById('apikey');
+
+apikey.addEventListener('input',onKeyInput);
+
+document.getElementById('tog-btn').addEventListener('click',function(){
+  apikey.type=apikey.type==='password'?'text':'password';
+  this.textContent=apikey.type==='password'?'pokaż':'ukryj';
+});
+
+document.getElementById('run-btn').addEventListener('click',run);
+document.getElementById('copy-btn').addEventListener('click',function(){
+  navigator.clipboard.writeText(document.getElementById('out').textContent).then(()=>{
+    this.textContent='skopiowano!';
+    setTimeout(()=>this.textContent='kopiuj',1800);
+  });
+});
+
+zone.addEventListener('click',function(e){
+  if(e.target!==fi) fi.click();
+});
+
+zone.addEventListener('dragenter',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  zone.classList.add('over');
+});
+zone.addEventListener('dragover',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  zone.classList.add('over');
+});
+zone.addEventListener('dragleave',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  if(!zone.contains(e.relatedTarget)) zone.classList.remove('over');
+});
+zone.addEventListener('drop',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  zone.classList.remove('over');
+  const f=e.dataTransfer.files[0];
+  if(f) load(f);
+});
+
+fi.addEventListener('change',function(){
+  if(this.files[0]) load(this.files[0]);
+});
 
 function onKeyInput(){
   clearTimeout(keyTimer);
-  const key=document.getElementById('apikey').value.trim();
-  if(key.length<10){detectedModel=null;updateBtn();setModelStatus('','');return;}
+  const key=apikey.value.trim();
+  if(key.length<10){detectedModel=null;updateBtn();setStatus('','');return;}
   keyTimer=setTimeout(()=>discoverModel(key),800);
 }
 
@@ -156,7 +222,7 @@ function updateBtn(){
   document.getElementById('run-btn').disabled=!(detectedModel&&b64);
 }
 
-function setModelStatus(cls,msg){
+function setStatus(cls,msg){
   const el=document.getElementById('model-status');
   el.className='';
   if(!msg){el.style.display='none';return;}
@@ -166,7 +232,7 @@ function setModelStatus(cls,msg){
 }
 
 async function discoverModel(key){
-  setModelStatus('checking','Sprawdzam dostępne modele...');
+  setStatus('checking','Sprawdzam dostępne modele...');
   try{
     const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
     if(!res.ok){
@@ -174,54 +240,45 @@ async function discoverModel(key){
       throw new Error(d?.error?.message||`HTTP ${res.status}`);
     }
     const data=await res.json();
-    const models=(data.models||[]);
-
-    const preferred=[
-      'gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash-lite',
-      'gemini-2.0-flash-thinking','gemini-1.5-flash','gemini-1.5-flash-8b','gemini-1.5-pro'
-    ];
-
+    const models=data.models||[];
+    const preferred=['gemini-2.5-pro','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-1.5-pro','gemini-1.5-flash','gemini-1.5-flash-8b'];
     let chosen=null;
     for(const pref of preferred){
-      const found=models.find(m=>
-        m.name&&m.name.includes(pref)&&
-        (m.supportedGenerationMethods||[]).includes('generateContent')
-      );
+      const found=models.find(m=>m.name&&m.name.includes(pref)&&(m.supportedGenerationMethods||[]).includes('generateContent'));
       if(found){chosen=found.name.replace('models/','');break;}
     }
-
     if(!chosen){
-      const any=models.find(m=>
-        (m.supportedGenerationMethods||[]).includes('generateContent')&&
-        m.name&&!m.name.includes('embedding')&&!m.name.includes('aqa')
-      );
+      const any=models.find(m=>(m.supportedGenerationMethods||[]).includes('generateContent')&&m.name&&!m.name.includes('embedding')&&!m.name.includes('aqa'));
       if(any)chosen=any.name.replace('models/','');
     }
-
-    if(chosen){
-      detectedModel=chosen;
-      setModelStatus('ok','✓ model: '+chosen);
-      updateBtn();
-    }else{
-      throw new Error('Brak modeli obsługujących generateContent na tym kluczu.');
-    }
+    if(chosen){detectedModel=chosen;setStatus('ok','✓ model: '+chosen);updateBtn();}
+    else throw new Error('Brak modeli obsługujących generateContent na tym kluczu.');
   }catch(e){
-    detectedModel=null;
-    setModelStatus('fail','✗ '+e.message);
-    updateBtn();
+    detectedModel=null;setStatus('fail','✗ '+e.message);updateBtn();
   }
 }
 
 function load(f){
-  if(!f||!f.type.startsWith('image/'))return;
+  const allowed=['image/png','image/jpeg','image/webp','image/gif','application/pdf'];
+  if(!allowed.includes(f.type)){showErr('Nieobsługiwany format. Użyj PNG, JPG, WEBP lub PDF.');return;}
+  isPdf=f.type==='application/pdf';
   mime=f.type;
   const r=new FileReader();
   r.onload=e=>{
     b64=e.target.result.split(',')[1];
-    const p=document.getElementById('prev');
-    p.src=e.target.result;
-    p.style.display='block';
-    document.getElementById('hint').style.display='none';
+    const prev=document.getElementById('prev');
+    const pdfInfo=document.getElementById('pdf-info');
+    const hint=document.getElementById('hint');
+    hint.style.display='none';
+    if(isPdf){
+      prev.style.display='none';
+      pdfInfo.style.display='block';
+      pdfInfo.textContent='✓ PDF wczytany: '+f.name+' ('+Math.round(f.size/1024)+' KB)';
+    }else{
+      prev.src=e.target.result;
+      prev.style.display='block';
+      pdfInfo.style.display='none';
+    }
     document.getElementById('res-wrap').style.display='none';
     document.getElementById('err').style.display='none';
     updateBtn();
@@ -229,27 +286,24 @@ function load(f){
   r.readAsDataURL(f);
 }
 
-function cp(btn){
-  navigator.clipboard.writeText(document.getElementById('out').textContent).then(()=>{
-    btn.textContent='skopiowano!';
-    setTimeout(()=>btn.textContent='kopiuj',1800);
-  });
-}
-
 const modes={
-  verbatim:'Przepisz DOKŁADNIE cały tekst widoczny na zdjęciu, słowo po słowie, zachowując oryginalną pisownię i układ linii.',
+  verbatim:'Przepisz DOKŁADNIE cały tekst widoczny w dokumencie, słowo po słowie, zachowując oryginalną pisownię i układ linii.',
   clean:'Przepisz tekst poprawiając błędy ortograficzne i interpunkcję. Zachowaj sens i strukturę.',
   table:'Odczytaj dane z tabeli lub formularza i przedstaw je w formacie tekstowym. Kolumny oddzielaj znakiem |. Zachowaj tytuł i nagłówki.',
-  summary:'Napisz krótkie podsumowanie (2–4 zdania) najważniejszych informacji widocznych na zdjęciu.'
+  summary:'Napisz krótkie podsumowanie (2–4 zdania) najważniejszych informacji z dokumentu.'
 };
 const langs={pl:'polskim',en:'angielskim',de:'niemieckim',fr:'francuskim',auto:'automatycznie wykrytym'};
 
 async function run(){
   if(!b64||!detectedModel)return;
-  const key=document.getElementById('apikey').value.trim();
+  const key=apikey.value.trim();
   const lang=document.getElementById('lang').value;
   const mode=document.getElementById('mode').value;
-  const prompt=`Jesteś ekspertem OCR pisma odręcznego. Tekst jest w języku ${langs[lang]}.\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów, komentarzy ani wyjaśnień.`;
+  const prompt=`Jesteś ekspertem OCR pisma odręcznego i dokumentów. Tekst jest w języku ${langs[lang]}.\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów, komentarzy ani wyjaśnień.`;
+
+  const part=isPdf
+    ?{inline_data:{mime_type:'application/pdf',data:b64}}
+    :{inline_data:{mime_type:mime,data:b64}};
 
   document.getElementById('run-btn').disabled=true;
   document.getElementById('spin').style.display='block';
@@ -260,10 +314,7 @@ async function run(){
     const res=await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${detectedModel}:generateContent?key=${key}`,
       {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({contents:[{parts:[
-         {inline_data:{mime_type:mime,data:b64}},
-         {text:prompt}
-       ]}]})}
+       body:JSON.stringify({contents:[{parts:[part,{text:prompt}]}]})}
     );
     if(!res.ok){
       const d=await res.json().catch(()=>({}));
