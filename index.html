@@ -161,6 +161,9 @@
 <script>
 let b64=null, mime=null, detectedModel=null, keyTimer=null, isPdf=false;
 
+document.addEventListener('dragover',function(e){e.preventDefault();});
+document.addEventListener('drop',function(e){e.preventDefault();});
+
 const zone=document.getElementById('zone');
 const fi=document.getElementById('fi');
 const apikey=document.getElementById('apikey');
