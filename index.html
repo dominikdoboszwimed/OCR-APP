@@ -24,6 +24,9 @@
   .key-wrap{display:flex;gap:8px;align-items:center}
   input[type=text],input[type=password]{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:13px;color:var(--text);outline:none;transition:border-color .2s}
   input:focus{border-color:var(--border-h)}
+  textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color .2s;resize:vertical;min-height:72px;line-height:1.5}
+  textarea:focus{border-color:var(--border-h)}
+  textarea::placeholder{color:var(--dim)}
   .tog{background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--muted);font-size:13px;padding:10px 12px;cursor:pointer;transition:color .2s,border-color .2s;flex-shrink:0}
   .tog:hover{color:var(--text);border-color:var(--border-h)}
   .note{font-size:12px;color:var(--dim);margin-top:8px;line-height:1.5}
@@ -33,22 +36,7 @@
   #model-status.ok{background:rgba(111,207,151,.08);border:1px solid rgba(111,207,151,.2);color:var(--ok)}
   #model-status.checking{background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
   #model-status.fail{background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.2);color:var(--danger)}
-
-  #zone{
-    border:1.5px dashed var(--border-h);
-    border-radius:var(--r);
-    min-height:220px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    transition:background .15s,border-color .2s;
-    background:var(--surface);
-    padding:2rem 1.5rem;
-    position:relative;
-    user-select:none;
-  }
+  #zone{border:1.5px dashed var(--border-h);border-radius:var(--r);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,border-color .2s;background:var(--surface);padding:2rem 1.5rem;user-select:none}
   #zone.over{background:var(--surface2);border-color:var(--accent-d);border-style:solid}
   #zone input{display:none}
   #prev{max-width:100%;max-height:260px;border-radius:8px;display:none;margin:0 auto;border:1px solid var(--border)}
@@ -59,7 +47,6 @@
   #hint small{font-size:13px;color:var(--dim)}
   #hint .formats{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
   #hint .tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:3px 8px}
-
   .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
   .ctrl{display:flex;flex-direction:column;flex:1;min-width:130px}
   select{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
@@ -72,12 +59,18 @@
   @keyframes sp{to{transform:rotate(360deg)}}
   #err{font-size:13px;color:var(--danger);font-family:'DM Mono',monospace;display:none;padding:10px 14px;background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.2);border-radius:7px;line-height:1.6;white-space:pre-wrap}
   #res-wrap{display:none}
-  .res-hdr{display:flex;align-items:center;margin-bottom:10px;gap:10px}
+  .res-hdr{display:flex;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap}
   .res-hdr .lbl{margin-bottom:0;flex:1}
   .copy-btn{background:transparent;border:1px solid var(--border);border-radius:7px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--muted);cursor:pointer;transition:color .2s,border-color .2s}
   .copy-btn:hover{color:var(--text);border-color:var(--border-h)}
   #out{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;font-family:'DM Mono',monospace;font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--text);word-break:break-word}
+  #svg-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1rem;display:none;overflow:auto}
+  #svg-wrap svg{width:100%;height:auto;display:block}
+  #svg-tabs{display:none;gap:8px;margin-bottom:10px}
+  .tab-btn{background:transparent;border:1px solid var(--border);border-radius:7px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;transition:all .2s}
+  .tab-btn.active{background:var(--accent);color:#0f0f0f;border-color:var(--accent)}
   #used-model{font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;margin-top:8px}
+  #hint-viz{font-size:12px;color:var(--dim);font-family:'DM Mono',monospace;display:none;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;line-height:1.5}
   footer{margin-top:3rem;font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;letter-spacing:.05em;text-align:center}
 </style>
 </head>
@@ -111,13 +104,18 @@
       <p>Przeciągnij plik tutaj lub kliknij</p>
       <small>Obsługiwane formaty:</small>
       <div class="formats">
-        <span class="tag">PNG</span>
-        <span class="tag">JPG</span>
-        <span class="tag">WEBP</span>
-        <span class="tag">PDF</span>
+        <span class="tag">PNG</span><span class="tag">JPG</span>
+        <span class="tag">WEBP</span><span class="tag">PDF</span>
       </div>
     </div>
   </div>
+
+  <div class="card">
+    <label class="lbl" for="context">Dodatkowy kontekst (opcjonalnie)</label>
+    <textarea id="context" placeholder="Np. 'To jest fotel biurowy z mechanizmem obrotowym. Szkic pokazuje przekrój boczny.' — im więcej kontekstu, tym dokładniejszy wynik."></textarea>
+  </div>
+
+  <div id="hint-viz">&#9888; Tryb wizualizacji: Gemini opisze szkic strukturalnie, a aplikacja wygeneruje z tego czysty rysunek SVG. Najlepiej działa na prostych schematach technicznych.</div>
 
   <div class="controls">
     <div class="ctrl">
@@ -139,6 +137,7 @@
         <option value="summary">Podsumowanie</option>
         <option value="sketch">Opis szkicu</option>
         <option value="combined">Tekst + szkic (łącznie)</option>
+        <option value="visualize">Tekst + wizualizacja SVG</option>
       </select>
     </div>
     <div class="spin" id="spin"></div>
@@ -149,10 +148,15 @@
 
   <div id="res-wrap">
     <div class="res-hdr">
-      <span class="lbl">Wynik odczytu</span>
+      <span class="lbl" id="res-label">Wynik odczytu</span>
+      <div id="svg-tabs">
+        <button class="tab-btn active" id="tab-text" onclick="showTab('text')">tekst</button>
+        <button class="tab-btn" id="tab-svg" onclick="showTab('svg')">wizualizacja</button>
+      </div>
       <button class="copy-btn" id="copy-btn">kopiuj</button>
     </div>
     <div id="out"></div>
+    <div id="svg-wrap"></div>
     <div id="used-model"></div>
   </div>
 
@@ -161,16 +165,23 @@
 <footer>powered by Google Gemini &mdash; działa lokalnie, bez serwera</footer>
 
 <script>
-let b64=null, mime=null, detectedModel=null, keyTimer=null, isPdf=false;
+let b64=null,mime=null,detectedModel=null,keyTimer=null,isPdf=false,lastSvg=null,lastText=null;
 
-document.addEventListener('dragover',function(e){e.preventDefault();});
-document.addEventListener('drop',function(e){e.preventDefault();});
+document.addEventListener('dragover',e=>e.preventDefault());
+document.addEventListener('drop',e=>e.preventDefault());
 
 const zone=document.getElementById('zone');
 const fi=document.getElementById('fi');
 const apikey=document.getElementById('apikey');
+const modeEl=document.getElementById('mode');
 
 apikey.addEventListener('input',onKeyInput);
+modeEl.addEventListener('change',onModeChange);
+
+function onModeChange(){
+  const m=modeEl.value;
+  document.getElementById('hint-viz').style.display=m==='visualize'?'block':'none';
+}
 
 document.getElementById('tog-btn').addEventListener('click',function(){
   apikey.type=apikey.type==='password'?'text':'password';
@@ -178,43 +189,21 @@ document.getElementById('tog-btn').addEventListener('click',function(){
 });
 
 document.getElementById('run-btn').addEventListener('click',run);
+
 document.getElementById('copy-btn').addEventListener('click',function(){
-  navigator.clipboard.writeText(document.getElementById('out').textContent).then(()=>{
+  const txt=lastText||document.getElementById('out').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
     this.textContent='skopiowano!';
     setTimeout(()=>this.textContent='kopiuj',1800);
   });
 });
 
-zone.addEventListener('click',function(e){
-  if(e.target!==fi) fi.click();
-});
-
-zone.addEventListener('dragenter',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  zone.classList.add('over');
-});
-zone.addEventListener('dragover',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  zone.classList.add('over');
-});
-zone.addEventListener('dragleave',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  if(!zone.contains(e.relatedTarget)) zone.classList.remove('over');
-});
-zone.addEventListener('drop',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  zone.classList.remove('over');
-  const f=e.dataTransfer.files[0];
-  if(f) load(f);
-});
-
-fi.addEventListener('change',function(){
-  if(this.files[0]) load(this.files[0]);
-});
+zone.addEventListener('click',e=>{if(e.target!==fi)fi.click()});
+zone.addEventListener('dragenter',e=>{e.preventDefault();e.stopPropagation();zone.classList.add('over')});
+zone.addEventListener('dragover',e=>{e.preventDefault();e.stopPropagation();zone.classList.add('over')});
+zone.addEventListener('dragleave',e=>{e.preventDefault();e.stopPropagation();if(!zone.contains(e.relatedTarget))zone.classList.remove('over')});
+zone.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();zone.classList.remove('over');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0])});
+fi.addEventListener('change',()=>{if(fi.files[0])load(fi.files[0])});
 
 function onKeyInput(){
   clearTimeout(keyTimer);
@@ -231,59 +220,43 @@ function setStatus(cls,msg){
   const el=document.getElementById('model-status');
   el.className='';
   if(!msg){el.style.display='none';return;}
-  el.style.display='block';
-  el.className=cls;
-  el.textContent=msg;
+  el.style.display='block';el.className=cls;el.textContent=msg;
 }
 
 async function discoverModel(key){
   setStatus('checking','Sprawdzam dostępne modele...');
   try{
     const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
-    if(!res.ok){
-      const d=await res.json().catch(()=>({}));
-      throw new Error(d?.error?.message||`HTTP ${res.status}`);
-    }
+    if(!res.ok){const d=await res.json().catch(()=>({}));throw new Error(d?.error?.message||`HTTP ${res.status}`);}
     const data=await res.json();
     const models=data.models||[];
     const preferred=['gemini-2.5-pro','gemini-2.5-flash','gemini-2.0-flash-lite','gemini-1.5-pro','gemini-1.5-flash','gemini-1.5-flash-8b'];
     let chosen=null;
-    for(const pref of preferred){
-      const found=models.find(m=>m.name&&m.name.includes(pref)&&(m.supportedGenerationMethods||[]).includes('generateContent'));
-      if(found){chosen=found.name.replace('models/','');break;}
+    for(const p of preferred){
+      const f=models.find(m=>m.name&&m.name.includes(p)&&(m.supportedGenerationMethods||[]).includes('generateContent'));
+      if(f){chosen=f.name.replace('models/','');break;}
     }
     if(!chosen){
       const any=models.find(m=>(m.supportedGenerationMethods||[]).includes('generateContent')&&m.name&&!m.name.includes('embedding')&&!m.name.includes('aqa'));
       if(any)chosen=any.name.replace('models/','');
     }
     if(chosen){detectedModel=chosen;setStatus('ok','✓ model: '+chosen);updateBtn();}
-    else throw new Error('Brak modeli obsługujących generateContent na tym kluczu.');
-  }catch(e){
-    detectedModel=null;setStatus('fail','✗ '+e.message);updateBtn();
-  }
+    else throw new Error('Brak dostępnych modeli na tym kluczu.');
+  }catch(e){detectedModel=null;setStatus('fail','✗ '+e.message);updateBtn();}
 }
 
 function load(f){
   const allowed=['image/png','image/jpeg','image/webp','image/gif','application/pdf'];
   if(!allowed.includes(f.type)){showErr('Nieobsługiwany format. Użyj PNG, JPG, WEBP lub PDF.');return;}
-  isPdf=f.type==='application/pdf';
-  mime=f.type;
+  isPdf=f.type==='application/pdf';mime=f.type;
   const r=new FileReader();
   r.onload=e=>{
     b64=e.target.result.split(',')[1];
     const prev=document.getElementById('prev');
     const pdfInfo=document.getElementById('pdf-info');
-    const hint=document.getElementById('hint');
-    hint.style.display='none';
-    if(isPdf){
-      prev.style.display='none';
-      pdfInfo.style.display='block';
-      pdfInfo.textContent='✓ PDF wczytany: '+f.name+' ('+Math.round(f.size/1024)+' KB)';
-    }else{
-      prev.src=e.target.result;
-      prev.style.display='block';
-      pdfInfo.style.display='none';
-    }
+    document.getElementById('hint').style.display='none';
+    if(isPdf){prev.style.display='none';pdfInfo.style.display='block';pdfInfo.textContent='✓ PDF: '+f.name+' ('+Math.round(f.size/1024)+' KB)';}
+    else{prev.src=e.target.result;prev.style.display='block';pdfInfo.style.display='none';}
     document.getElementById('res-wrap').style.display='none';
     document.getElementById('err').style.display='none';
     updateBtn();
@@ -291,55 +264,160 @@ function load(f){
   r.readAsDataURL(f);
 }
 
+function showTab(t){
+  document.getElementById('tab-text').className='tab-btn'+(t==='text'?' active':'');
+  document.getElementById('tab-svg').className='tab-btn'+(t==='svg'?' active':'');
+  document.getElementById('out').style.display=t==='text'?'block':'none';
+  document.getElementById('svg-wrap').style.display=t==='svg'?'block':'none';
+}
+
+const langs={pl:'polskim',en:'angielskim',de:'niemieckim',fr:'francuskim',auto:'automatycznie wykrytym'};
+
 const modes={
   verbatim:'Przepisz DOKŁADNIE cały tekst widoczny w dokumencie, słowo po słowie, zachowując oryginalną pisownię i układ linii.',
   clean:'Przepisz tekst poprawiając błędy ortograficzne i interpunkcję. Zachowaj sens i strukturę.',
-  table:'Odczytaj dane z tabeli lub formularza i przedstaw je w formacie tekstowym. Kolumny oddzielaj znakiem |. Zachowaj tytuł i nagłówki.',
+  table:'Odczytaj dane z tabeli lub formularza. Kolumny oddzielaj znakiem |. Zachowaj tytuł i nagłówki.',
   summary:'Napisz krótkie podsumowanie (2–4 zdania) najważniejszych informacji z dokumentu.',
-  sketch:'Opisz szczegółowo co widzisz na obrazie lub szkicu. Opisz: elementy graficzne, ich układ przestrzenny, kształty, powiązania między elementami, adnotacje, strzałki, wymiary jeśli widoczne. Odpowiadaj w języku polskim w formie strukturalnego opisu technicznego.',
-  combined:'Na obrazie może znajdować się zarówno tekst odręczny jak i szkic/rysunek. Wykonaj DWA zadania: 1) TEKST: przepisz dokładnie cały tekst odręczny. 2) SZKIC: opisz szczegółowo elementy graficzne, rysunki i szkice które widzisz — ich układ, kształty, powiązania, strzałki, wymiary. Rozdziel sekcje nagłówkami TEKST: i SZKIC:'
+  sketch:'Opisz szczegółowo co widzisz na szkicu. Opisz: elementy graficzne, ich układ przestrzenny, kształty, powiązania, strzałki, wymiary jeśli widoczne. Odpowiadaj w formie strukturalnego opisu technicznego.',
+  combined:'Wykonaj DWA zadania:\n1) TEKST: przepisz dokładnie cały tekst odręczny.\n2) SZKIC: opisz szczegółowo elementy graficzne — układ, kształty, powiązania, strzałki, wymiary.\nRozdziel sekcje nagłówkami "TEKST:" i "SZKIC:".'
 };
-const langs={pl:'polskim',en:'angielskim',de:'niemieckim',fr:'francuskim',auto:'automatycznie wykrytym'};
+
+async function callGemini(key,promptText){
+  const part=isPdf?{inline_data:{mime_type:'application/pdf',data:b64}}:{inline_data:{mime_type:mime,data:b64}};
+  const res=await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${detectedModel}:generateContent?key=${key}`,
+    {method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({contents:[{parts:[part,{text:promptText}]}]})}
+  );
+  if(!res.ok){const d=await res.json().catch(()=>({}));throw new Error(d?.error?.message||`HTTP ${res.status}`);}
+  const data=await res.json();
+  return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'';
+}
 
 async function run(){
   if(!b64||!detectedModel)return;
   const key=apikey.value.trim();
   const lang=document.getElementById('lang').value;
-  const mode=document.getElementById('mode').value;
-  const isSketch=mode==='sketch'||mode==='combined';
-  const role=isSketch?'Jesteś ekspertem analizy wizualnej szkiców technicznych i rysunków odręcznych':'Jesteś ekspertem OCR pisma odręcznego i dokumentów';
-  const prompt=`${role}. Tekst/opis ma być w języku ${langs[lang]}.\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów, komentarzy ani wyjaśnień.`;
-
-  const part=isPdf
-    ?{inline_data:{mime_type:'application/pdf',data:b64}}
-    :{inline_data:{mime_type:mime,data:b64}};
+  const mode=modeEl.value;
+  const context=document.getElementById('context').value.trim();
+  const ctxNote=context?`\n\nDodatkowy kontekst od użytkownika: "${context}"`:'';
 
   document.getElementById('run-btn').disabled=true;
   document.getElementById('spin').style.display='block';
   document.getElementById('res-wrap').style.display='none';
   document.getElementById('err').style.display='none';
+  lastSvg=null;lastText=null;
 
   try{
-    const res=await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${detectedModel}:generateContent?key=${key}`,
-      {method:'POST',headers:{'Content-Type':'application/json'},
-       body:JSON.stringify({contents:[{parts:[part,{text:prompt}]}]})}
-    );
-    if(!res.ok){
-      const d=await res.json().catch(()=>({}));
-      throw new Error(d?.error?.message||`HTTP ${res.status}`);
+    if(mode==='visualize'){
+      document.getElementById('spin').style.display='block';
+
+      const step1Prompt=`Jesteś ekspertem analizy szkiców technicznych. Tekst/opisy są w języku ${langs[lang]}.${ctxNote}
+
+Przeanalizuj szkic i zwróć TYLKO obiekt JSON (bez markdown, bez \`\`\`json) opisujący elementy rysunku w formacie:
+{
+  "title": "tytuł lub krótki opis szkicu",
+  "width": 600,
+  "height": 400,
+  "elements": [
+    {"type": "rect", "x": 50, "y": 50, "w": 200, "h": 100, "label": "nazwa elementu", "color": "#333"},
+    {"type": "circle", "cx": 300, "cy": 200, "r": 50, "label": "nazwa", "color": "#333"},
+    {"type": "line", "x1": 100, "y1": 100, "x2": 200, "y2": 200, "color": "#333"},
+    {"type": "arrow", "x1": 100, "y1": 100, "x2": 200, "y2": 150, "label": "opis"},
+    {"type": "text", "x": 150, "y": 80, "text": "napis", "size": 14}
+  ],
+  "textContent": "cały tekst odręczny z obrazu przepisany dosłownie"
+}
+
+Typy elementów: rect (prostokąt), circle (okrąg/elipsa z rx/ry zamiast r), line (linia), arrow (strzałka z etykietą), text (tekst).
+Współrzędne w przedziale 0-600 (x) i 0-400 (y). Dostosuj pozycje do rzeczywistego układu elementów na szkicu.`;
+
+      const jsonRaw=await callGemini(key,step1Prompt+ctxNote);
+      let parsed;
+      try{
+        const clean=jsonRaw.replace(/```json|```/g,'').trim();
+        parsed=JSON.parse(clean);
+      }catch(e){
+        throw new Error('Nie udało się przetworzyć odpowiedzi modelu na JSON. Spróbuj trybu "Opis szkicu".\n\nOdpowiedź modelu:\n'+jsonRaw.slice(0,300));
+      }
+
+      const svg=buildSVG(parsed);
+      lastSvg=svg;
+      lastText=parsed.textContent||'(brak tekstu odręcznego)';
+
+      document.getElementById('out').textContent=lastText;
+      document.getElementById('svg-wrap').innerHTML=svg;
+      document.getElementById('svg-wrap').style.display='block';
+      document.getElementById('svg-tabs').style.display='flex';
+      document.getElementById('res-label').textContent='Wynik';
+      showTab('svg');
+      document.getElementById('res-wrap').style.display='block';
+
+    } else {
+      const role=mode==='sketch'||mode==='combined'
+        ?'Jesteś ekspertem analizy wizualnej szkiców technicznych'
+        :'Jesteś ekspertem OCR pisma odręcznego i dokumentów';
+      const prompt=`${role}. Odpowiedź w języku ${langs[lang]}.${ctxNote}\n\n${modes[mode]}\n\nOdpowiedz TYLKO wynikiem — bez wstępów i komentarzy.`;
+      const text=await callGemini(key,prompt);
+      lastText=text;
+      document.getElementById('out').textContent=text||'Brak tekstu.';
+      document.getElementById('svg-wrap').style.display='none';
+      document.getElementById('svg-tabs').style.display='none';
+      document.getElementById('res-label').textContent='Wynik odczytu';
+      document.getElementById('res-wrap').style.display='block';
     }
-    const data=await res.json();
-    const text=data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim()||'Brak tekstu do odczytania.';
-    document.getElementById('out').textContent=text;
+
     document.getElementById('used-model').textContent='model: '+detectedModel;
-    document.getElementById('res-wrap').style.display='block';
+
   }catch(e){
     showErr(e.message);
   }finally{
     document.getElementById('run-btn').disabled=false;
     document.getElementById('spin').style.display='none';
   }
+}
+
+function buildSVG(d){
+  const W=d.width||600,H=d.height||400;
+  const title=d.title||'Szkic';
+  let s=`<svg viewBox="0 0 ${W} ${H+60}" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;background:#fafafa">`;
+  s+=`<defs><marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#444"/></marker></defs>`;
+  s+=`<rect width="${W}" height="${H+60}" fill="#fafafa" rx="4"/>`;
+  s+=`<text x="${W/2}" y="28" text-anchor="middle" font-size="15" font-weight="bold" fill="#222">${esc(title)}</text>`;
+  s+=`<line x1="20" y1="38" x2="${W-20}" y2="38" stroke="#ddd" stroke-width="1"/>`;
+
+  const g=`<g transform="translate(0,44)">`;
+  s+=g;
+
+  for(const el of(d.elements||[])){
+    const c=el.color||'#333';
+    const fill=el.fill||'none';
+    if(el.type==='rect'){
+      s+=`<rect x="${el.x}" y="${el.y}" width="${el.w}" height="${el.h}" rx="4" fill="${fill==='none'?'#f0f4ff':fill}" stroke="${c}" stroke-width="1.5"/>`;
+      if(el.label)s+=`<text x="${el.x+el.w/2}" y="${el.y+el.h/2+5}" text-anchor="middle" font-size="12" fill="${c}">${esc(el.label)}</text>`;
+    }else if(el.type==='circle'){
+      const rx=el.rx||el.r||30,ry=el.ry||el.r||30;
+      s+=`<ellipse cx="${el.cx}" cy="${el.cy}" rx="${rx}" ry="${ry}" fill="${fill==='none'?'#f0f4ff':fill}" stroke="${c}" stroke-width="1.5"/>`;
+      if(el.label)s+=`<text x="${el.cx}" y="${el.cy+5}" text-anchor="middle" font-size="12" fill="${c}">${esc(el.label)}</text>`;
+    }else if(el.type==='line'){
+      s+=`<line x1="${el.x1}" y1="${el.y1}" x2="${el.x2}" y2="${el.y2}" stroke="${c}" stroke-width="1.5"/>`;
+    }else if(el.type==='arrow'){
+      s+=`<line x1="${el.x1}" y1="${el.y1}" x2="${el.x2}" y2="${el.y2}" stroke="#444" stroke-width="1.5" marker-end="url(#arr)"/>`;
+      if(el.label){
+        const mx=(el.x1+el.x2)/2,my=(el.y1+el.y2)/2-8;
+        s+=`<text x="${mx}" y="${my}" text-anchor="middle" font-size="11" fill="#555">${esc(el.label)}</text>`;
+      }
+    }else if(el.type==='text'){
+      s+=`<text x="${el.x}" y="${el.y}" font-size="${el.size||13}" fill="${c||'#222'}">${esc(el.text||'')}</text>`;
+    }
+  }
+
+  s+=`</g></svg>`;
+  return s;
+}
+
+function esc(t){
+  return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function showErr(msg){
