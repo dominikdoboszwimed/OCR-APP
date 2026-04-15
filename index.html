@@ -154,6 +154,7 @@
         <button class="tab-btn" id="tab-svg" onclick="showTab('svg')">wizualizacja</button>
       </div>
       <button class="copy-btn" id="copy-btn">kopiuj</button>
+      <button class="copy-btn" id="dl-btn" style="display:none">pobierz JPG</button>
     </div>
     <div id="out"></div>
     <div id="svg-wrap"></div>
@@ -190,6 +191,7 @@ document.getElementById('tog-btn').addEventListener('click',function(){
 
 document.getElementById('run-btn').addEventListener('click',run);
 
+document.getElementById('dl-btn').addEventListener('click',downloadJPG);
 document.getElementById('copy-btn').addEventListener('click',function(){
   const txt=lastText||document.getElementById('out').textContent;
   navigator.clipboard.writeText(txt).then(()=>{
@@ -351,6 +353,7 @@ Współrzędne w przedziale 0-600 (x) i 0-400 (y). Dostosuj pozycje do rzeczywis
       document.getElementById('svg-tabs').style.display='flex';
       document.getElementById('res-label').textContent='Wynik';
       showTab('svg');
+      document.getElementById('dl-btn').style.display='block';
       document.getElementById('res-wrap').style.display='block';
 
     } else {
@@ -363,6 +366,7 @@ Współrzędne w przedziale 0-600 (x) i 0-400 (y). Dostosuj pozycje do rzeczywis
       document.getElementById('out').textContent=text||'Brak tekstu.';
       document.getElementById('svg-wrap').style.display='none';
       document.getElementById('svg-tabs').style.display='none';
+      document.getElementById('dl-btn').style.display='none';
       document.getElementById('res-label').textContent='Wynik odczytu';
       document.getElementById('res-wrap').style.display='block';
     }
@@ -418,6 +422,50 @@ function buildSVG(d){
 
 function esc(t){
   return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function downloadJPG(){
+  const svgEl=document.getElementById('svg-wrap').querySelector('svg');
+  if(!svgEl)return;
+
+  // Pobierz rzeczywiste wymiary z viewBox lub atrybutów
+  const vb=svgEl.getAttribute('viewBox');
+  let svgW,svgH;
+  if(vb){
+    const parts=vb.trim().split(/[\s,]+/);
+    svgW=parseFloat(parts[2]);
+    svgH=parseFloat(parts[3]);
+  }else{
+    svgW=parseFloat(svgEl.getAttribute('width'))||800;
+    svgH=parseFloat(svgEl.getAttribute('height'))||600;
+  }
+
+  // Ustaw stały rozmiar na SVG przed serializacją
+  const clone=svgEl.cloneNode(true);
+  clone.setAttribute('width',svgW);
+  clone.setAttribute('height',svgH);
+
+  const svgData=new XMLSerializer().serializeToString(clone);
+  const blob=new Blob([svgData],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+  img.onload=function(){
+    const scale=2;
+    const canvas=document.createElement('canvas');
+    canvas.width=svgW*scale;
+    canvas.height=svgH*scale;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.scale(scale,scale);
+    ctx.drawImage(img,0,0,svgW,svgH);
+    URL.revokeObjectURL(url);
+    const a=document.createElement('a');
+    a.download='szkic-wizualizacja.jpg';
+    a.href=canvas.toDataURL('image/jpeg',0.95);
+    a.click();
+  };
+  img.src=url;
 }
 
 function showErr(msg){
